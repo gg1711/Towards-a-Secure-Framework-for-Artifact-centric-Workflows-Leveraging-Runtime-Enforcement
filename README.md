@@ -11,7 +11,8 @@ We specify the necessary lifecycle constraints as specification and construct an
 
 ## Requirements:
 *   Python 3.x
-*   rsa library *pip install rsa*
+*   Go (installation steps mentioned in [execution](#execution-steps) section)
+*   rsa library *pip3 install rsa*
 *   hashlib     
 *   os
 
@@ -108,6 +109,9 @@ We will call required modules and functions from the created project file [runti
 
 1.  Change directory to */easy-rte-master*
     > cd easy-rte-master/
+
+2.  Need this step for first time only. You need to download Go programming language to build few libraries. Follow [this link](https://go.dev/doc/install)  to install Go programming langauge. Now run make command.
+    > make
 
 2. Compile and build our project file for generating enforcement monitor based on our constraints specified.
     > make c_enf c_build  PROJECT=runtime_lifecycle_enforcer

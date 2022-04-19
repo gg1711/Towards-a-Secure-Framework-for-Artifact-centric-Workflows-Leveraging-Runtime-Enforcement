@@ -29,7 +29,7 @@ int main() {
 
 	Py_Initialize();
     
-    PyRun_SimpleString("import sys;import os; print(os.getcwd()); sys.path.append('/home/iit/Desktop/gg1711/Runtime-Enforcement-with-decentralised-lifecycle/'); os.chdir('/home/iit/Desktop/gg1711/Runtime-Enforcement-with-decentralised-lifecycle/'); print(os.getcwd()); sys.argv = ['']");
+    PyRun_SimpleString("import sys;import os; os.chdir('..');print(os.getcwd()); sys.path.append(os.getcwd()); sys.argv = ['']");
 
 	// fp = _Py_fopen(filename1, "r");
 	// PyRun_SimpleFile(fp, filename1);
@@ -37,14 +37,14 @@ int main() {
     // PyRun_SimpleString("print(os.listdir())");
     
     //mapping Index and Name
-    int16_t* map[7];
+    int16_t* map[6];
     map[0] = &inputs.W_A_G1;
     map[1] = &inputs.W_B_G1;
     map[2] = &inputs.W_C_G1;
-    map[3] = &inputs.W_D_G2;
-    map[4] = &inputs.W_E_G1;
+    map[3] = &inputs.W_C_G2;
+    map[4] = &inputs.W_D_G2;
     map[5] = &inputs.W_E_G2;
-    map[6] = &inputs.W_F_G2;
+
 
     PyObject *module = NULL;
 
@@ -72,7 +72,7 @@ int main() {
                 // printf("%d\n",peer_index);
                 
                 //assigning inputs to enforcer..based on mapping
-                for(int i=0;i<7;i++){
+                for(int i=0;i<6;i++){
                     if(peer_index == i)
                         *map[i] = 1;
                     else 
@@ -106,7 +106,7 @@ int main() {
         // Read actions of particular group and user_name
         do{
             int user_index;
-            printf("Enter mapped Index(0-6) for reading files: ");
+            printf("Enter mapped Index(0-5) for reading files: ");
             scanf("%d", &user_index);
             assert(user_index>=0 && user_index<7);
             PyObject *reader = PyObject_CallMethod(module, "read_document","i", user_index);

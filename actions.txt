@@ -1,9 +1,5 @@
-A, G1, 17cs02005
-C, G1, 17cs02005
-B, G1, 17cs02003
-E, G2, random4
-E, G1, 17cs02007
-F, G2, random2
-D, G2, random1
-D, G2, random3
-A, G1, I am admin
+C, G1, I'm Research Lead 
+D, G2, Data is power
+B, G1, Faculty is writing
+A, G1, student checking data
+E, G2, I am research director

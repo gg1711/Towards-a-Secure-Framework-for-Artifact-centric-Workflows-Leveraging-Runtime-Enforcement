@@ -1,75 +1,70 @@
 function runtime_lifecycle_enforcer;
 interface of runtime_lifecycle_enforcer {
-	in int16_t W_A_G1, W_B_G1, W_C_G1, W_D_G2, W_E_G1, W_E_G2, W_F_G2;  //in here means all possible actions 
+	in int16_t W_A_G1, W_B_G1, W_C_G1, W_C_G2, W_D_G2, W_E_G2;  //in here means all possible actions 
     out int16_t res:=0;
     out int16_t res2:=0; //out here will tell do we need to flash message
     out int16_t res3:=0;
 }
 
-// A can only write after B, C, E have written for group 1
+// A can only write after B, C have written for group 1
 policy p1 of runtime_lifecycle_enforcer {
     internals{
         int16_t A_G1_p1 := 0 ;
         int16_t B_G1_p1 := 0 ;
         int16_t C_G1_p1 := 0 ;
-        int16_t E_G1_p1 := 0 ;
     }
 	states {
 
 		s0 {    
-            -> s1 on (W_A_G1 and B_G1_p1=1 and C_G1_p1=1 and E_G1_p1=1): A_G1_p1 := 1;
+            -> s1 on (W_A_G1 and B_G1_p1=1 and C_G1_p1=1): A_G1_p1 := 1;
             -> s0 on (W_B_G1): B_G1_p1 := 1;
             -> s0 on (W_C_G1): C_G1_p1 := 1;
-            -> s0 on (W_E_G1): E_G1_p1 := 1;
-            -> violation on (W_A_G1 and (B_G1_p1=0 or C_G1_p1=0 or E_G1_p1=0)) recover res := 1;
+            -> violation on (W_A_G1 and (B_G1_p1=0 or C_G1_p1=0)) recover res := 1;
            }
         s1 {    
             -> s1 on (W_A_G1);
-            -> violation on (W_B_G1 or W_C_G1 or W_E_G1) recover res := 2;
+            -> violation on (W_B_G1 or W_C_G1) recover res := 2;
            }
     }
 }
 
 
-// B can only write after C has written for group 1
-
+// E can only write after D has written for group 2
 policy p2 of runtime_lifecycle_enforcer {
    internals{
-        int16_t B_G1_p2 := 0 ;
-        int16_t C_G1_p2 := 0 ;
+        int16_t E_G2_p2 := 0 ;
+        int16_t D_G2_p2 := 0 ;
     }
    states {
 
 		s0 {    
-            -> s1 on (W_B_G1 and C_G1_p2=1): B_G1_p2 := 1;
-            -> s0 on (W_C_G1): C_G1_p2 := 1;
-            -> violation on (W_B_G1 and C_G1_p2=0) recover res2 := 1;
+            -> s1 on (W_E_G2 and D_G2_p2=1): E_G2_p2 := 1;
+            -> s0 on (W_D_G2): D_G2_p2 := 1;
+            -> violation on (W_E_G2 and D_G2_p2=0) recover res2 := 1;
            }
         s1 {    
-            -> s1 on (W_B_G1);
-            -> violation on (W_C_G1=1) recover res2 := 2;
+            -> s1 on (W_E_G2);
+            -> violation on (W_D_G2=1) recover res2 := 2;
            }
     }
 }
 
-// D can only write after E, F have written for group 2
+// B from Group1 can only write after D from Group2 have written.
 policy p3 of runtime_lifecycle_enforcer {
      internals{
+        int16_t B_G1_p3 := 0 ;
         int16_t D_G2_p3 := 0 ;
-        int16_t E_G2_p3 := 0 ;
-        int16_t F_G2_p3 := 0 ;
     }
 	states {
 
 		s0 {    
-            -> s1 on (W_D_G2 and E_G2_p3=1 and F_G2_p3=1): D_G2_p3 := 1;
-            -> s0 on (W_F_G2): F_G2_p3 := 1;
-            -> s0 on (W_E_G2): E_G2_p3 := 1;
-            -> violation on (W_D_G2 and (E_G2_p3=0 or F_G2_p3=0)) recover res3 := 1;
+            -> s1 on (W_B_G1 and D_G2_p3=1): B_G1_p3 := 1;
+            -> s0 on (W_D_G2): D_G2_p3 := 1;
+            -> violation on (W_B_G1 and (D_G2_p3=0)) recover res3 := 1;
            }
         s1 {    
-            -> s1 on (W_D_G2);
-            -> violation on (W_F_G2=1 or W_E_G2=1) recover res3 := 2;
+            -> s1 on (W_B_G1);
+            -> violation on (W_D_G2=1) recover res3 := 2;
            }
     }
 }

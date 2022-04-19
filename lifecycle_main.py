@@ -1,9 +1,5 @@
-import random, string
-import os
 from key_generation_peers import Peers
 from document_lifecycle import Document
-import time
-import matplotlib.pyplot as plt
 
 
 groups = ['G1', 'G2']
@@ -23,7 +19,7 @@ if arg == 'YES':
     group2.add_user()
 print(f"groups available are:  {group1.name} and {group2.name}")
 
-users = ['A','B','C', 'D','E','F']
+users = ['A','B','C', 'D','E']
 user_objects = dict()
 
 for user in users:
@@ -32,7 +28,7 @@ for user in users:
 print("Users available are: ", end="")
 print(users)
 
-user_groups = [[group1], [group1], [group1], [group2], [group1, group2], [group2]]
+user_groups = [[group1], [group1], [group1, group2], [group2], [group2]]
 arg = input('Want to generate new keys for Users YES/NO: ')
 
 if arg == 'YES':
