@@ -118,7 +118,7 @@ We will call required modules and functions from the created project file [runti
 All the actions in our document are taken from [action.txt](actions.txt) file. You can edit this file without any need for rebuilding project.
 
 Actions on the document can be mentioned easily in the format.
->   &lt;peer_name&gt;, &lt;Group_name&gt;, &lt;write_action_text&gt;
->   A, G1, hello World!!
+>   &lt;peer_name&gt;, &lt;Group_name&gt;, &lt;write_action_text&gt; <br>
+>   A, G1, hello World!!<br>
 >   C, G2, I am Research Lead 
 
