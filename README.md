@@ -39,7 +39,7 @@ Implementation can also be divided into two components:
 
 To demonstrate our framework, we have considered a scenario. 
 
-In this considered scenario, I have taken two groups and five peers. They are alloted groups where one peer can be part of more than one group.
+In this considered scenario, we have taken two groups and five peers. They are alloted groups where one peer can be part of more than one group.
 
 >Groups
 > * G1 (Group 1)
@@ -81,7 +81,7 @@ If action is verified, required changes will be made in file and digest based on
 
 > If user won't have access to that group, he can't perform action.
 
-In the last, I have also shown how any user can verify the file using action sequences and calculated digest.
+In the last, we have also shown how any user can verify the file using action sequences and calculated digest.
 
 This can be done by any user but actual action performed can only be read by members of that group.
 
