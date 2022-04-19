@@ -119,6 +119,6 @@ All the actions in our document are taken from [action.txt](actions.txt) file. Y
 
 Actions on the document can be mentioned easily in the format.
 > &lt;peer_name&gt;, &lt;Group_name&gt;, &lt;write_action_text&gt;
-    A, G1, hello World!!
-    C, G2, I am Research Lead 
+>   A, G1, hello World!!
+>   C, G2, I am Research Lead 
 
