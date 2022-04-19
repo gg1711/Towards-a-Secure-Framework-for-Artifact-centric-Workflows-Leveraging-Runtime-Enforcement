@@ -1,0 +1,9 @@
+A, G1, 17cs02005
+C, G1, 17cs02005
+B, G1, 17cs02003
+E, G2, random4
+E, G1, 17cs02007
+F, G2, random2
+D, G2, random1
+D, G2, random3
+A, G1, I am admin
