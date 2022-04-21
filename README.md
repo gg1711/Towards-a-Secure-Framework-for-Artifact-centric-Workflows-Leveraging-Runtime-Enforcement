@@ -32,7 +32,7 @@ All the actions done by peers are mentioned in process flow diagram.
 
 Implementation can also be divided into two components:
 *   Implementaing cryptographic approaches
-*   Implementing runtime enforcment approaches (inside dotted section).
+*   Implementing runtime enforcement approaches (inside dotted section).
 
 ![Considered Scenario](images/groups.png)
 
@@ -97,7 +97,7 @@ We have taken 3 constraints for demonstrating applicability of our approach:
 
 ## Execution Steps:
 
-We have implemented runtiem enforcer into *easy-rte-master* folder.
+We have implemented runtime enforcer into *easy-rte-master* folder.
 
 Lifecycle constraints are mentioned in .erte file at file [erte file](easy-rte-master/example/runtime_lifecycle_enforcer/runtime_lifecycle_enforcer.erte).
 

@@ -5,18 +5,17 @@
 #include <Python.h>
 #include <wchar.h>
 
-void print_data(inputs_runtime_lifecycle_enforcer_t inputs, outputs_runtime_lifecycle_enforcer_t outputs) {
-    // printf("Tick: %3d, %d, %d, %d, %d, %d, %d, %d\r\n",outputs.res, outputs.A_G1, outputs.B_G1, outputs.C_G1, outputs.D_G2, outputs.E_G1, outputs.E_G2, outputs.F_G2);
-    // if(outputs.res>0){
-    //     printf("\t PROPERTY VIOLATED!!!\n");
-    //     exit(0);
-    // }
+bool verify_data(inputs_runtime_lifecycle_enforcer_t inputs, outputs_runtime_lifecycle_enforcer_t outputs) {
 
     printf("res1: %d, res2: %d, res3: %d\r\n",outputs.res, outputs.res2, outputs.res3);
     if(outputs.res>0 || outputs.res2>0 || outputs.res3>0){
         printf("\t PROPERTY VIOLATED!!!\n");
-        exit(0);
+        outputs.res = 0;
+        outputs.res2 = 0;
+        outputs.res3 = 0;
+        return 0;
     }
+    return 1;
 }
 
 
@@ -63,12 +62,13 @@ int main() {
             
             printf("%d\n", len);
             for(int idx = 0; idx<len; idx++){
-                PyObject *write = PyObject_CallMethod(module, "write_action","O", PyList_GetItem(actions, idx));
+                PyObject *actor = PyObject_CallMethod(module, "get_peer_index","O", PyList_GetItem(actions, idx));
 
-                if (!write){
+                 if (!actor){
                     goto done;
                 }
-                int peer_index = (int)PyLong_AsLong(write);
+
+                int peer_index = (int)PyLong_AsLong(actor);
                 // printf("%d\n",peer_index);
                 
                 //assigning inputs to enforcer..based on mapping
@@ -81,8 +81,15 @@ int main() {
                 
                 //erte runtime enforcement
                 runtime_lifecycle_enforcer_run_via_enforcer(&enf, &inputs, &outputs);
-                print_data(inputs, outputs);
+                
+                if(verify_data(inputs, outputs)==true){
+                    PyObject *write = PyObject_CallMethod(module, "write_action","O", PyList_GetItem(actions, idx));
+                    if (!write){
+                        goto done;
+                    }
+                }
             }
+
         int flag = 0;
         printf("Do you want to check document tampering(0/1)? ");
         scanf("%d", &flag);

@@ -72,6 +72,16 @@ def parse_actions():
     return actions
 
 
+def get_peer_index(action):
+    ''' Based on the details of the action, we will return mapped index 
+        Format: (peer_name, group_name, text_to_write)
+    '''
+    peer_name = action[0]
+    group_name = action[1]
+
+    return index[(peer_name, group_name)]
+
+
 def write_action(action):
     ''' Write action will be done based on input received.
         Format: (peer_name, group_name, text_to_write)
