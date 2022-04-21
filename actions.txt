@@ -1,5 +1,5 @@
-A, G1, student checking data
 C, G1, I'm Research Lead 
+A, G1, student checking data
 D, G2, Data is power
 B, G1, Faculty is writing
 A, G1, student checking data
