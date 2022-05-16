@@ -5,19 +5,19 @@
 #include <Python.h>
 #include <wchar.h>
 
-bool verify_data(inputs_runtime_lifecycle_enforcer_t *inputs, outputs_runtime_lifecycle_enforcer_t *outputs) {
+// bool verify_data(inputs_runtime_lifecycle_enforcer_t *inputs, outputs_runtime_lifecycle_enforcer_t *outputs) {
 
-    printf("res1: %d, res2: %d, res3: %d\r\n",outputs->res, outputs->res2, outputs->res3);
-    if(outputs->res>0 || outputs->res2>0 || outputs->res3>0){
-        printf("\t PROPERTY VIOLATED!!!\n");
-        //reset output channel
-        outputs->res = 0;
-        outputs->res2 = 0;
-        outputs->res3 = 0;
-        return 0;
-    }
-    return 1;
-}
+//     printf("res1: %d, res2: %d, res3: %d\r\n",outputs->res, outputs->res2, outputs->res3);
+//     if(outputs->res>0 || outputs->res2>0 || outputs->res3>0){
+//         printf("\t PROPERTY VIOLATED!!!\n");
+//         //reset output channel
+//         outputs->res = 0;
+//         outputs->res2 = 0;
+//         outputs->res3 = 0;
+//         return 0;
+//     }
+//     return 1;
+// }
 
 
 int main() {
@@ -83,11 +83,15 @@ int main() {
                 //erte runtime enforcement
                 runtime_lifecycle_enforcer_run_via_enforcer(&enf, &inputs, &outputs);
                 
-                if(verify_data(&inputs, &outputs)==true){
-                    PyObject *write = PyObject_CallMethod(module, "write_action","O", PyList_GetItem(actions, idx));
+
+                if(*map[peer_index] == 1){
+                    PyObject *write = PyObject_CallMethod(module, "write_action","O", PyList_GetItem(actions, peer_index));
                     if (!write){
                         goto done;
                     }
+                }
+                else{
+                    printf("Action from mapped index %d is discarded \n", peer_index);
                 }
             }
 

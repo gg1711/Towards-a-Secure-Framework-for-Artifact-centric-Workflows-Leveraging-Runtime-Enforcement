@@ -1,9 +1,7 @@
 function runtime_lifecycle_enforcer;
 interface of runtime_lifecycle_enforcer {
 	in int16_t W_A_G1, W_B_G1, W_C_G1, W_C_G2, W_D_G2, W_E_G2;  //in here means all possible actions 
-    out int16_t res:=0;
-    out int16_t res2:=0; //out here will tell do we need to flash message
-    out int16_t res3:=0;
+    // instead of taking output channels, we will edit input channels only.
 }
 
 // A can only write after B, C have written for group 1
@@ -19,11 +17,11 @@ policy p1 of runtime_lifecycle_enforcer {
             -> s1 on (W_A_G1 and B_G1_p1=1 and C_G1_p1=1): A_G1_p1 := 1;
             -> s0 on (W_B_G1): B_G1_p1 := 1;
             -> s0 on (W_C_G1): C_G1_p1 := 1;
-            -> violation on (W_A_G1 and (B_G1_p1=0 or C_G1_p1=0)) recover res := 1;
+            -> violation on (W_A_G1 and (B_G1_p1=0 or C_G1_p1=0)) recover W_A_G1 := 0;
            }
         s1 {    
             -> s1 on (W_A_G1);
-            -> violation on (W_B_G1 or W_C_G1) recover res := 2;
+            -> violation on (W_B_G1 or W_C_G1) recover W_B_G1 := 0, W_C_G1 := 0;
            }
     }
 }
@@ -40,11 +38,11 @@ policy p2 of runtime_lifecycle_enforcer {
 		s0 {    
             -> s1 on (W_E_G2 and D_G2_p2=1): E_G2_p2 := 1;
             -> s0 on (W_D_G2): D_G2_p2 := 1;
-            -> violation on (W_E_G2 and D_G2_p2=0) recover res2 := 1;
+            -> violation on (W_E_G2 and D_G2_p2=0) recover W_E_G2 := 0;
            }
         s1 {    
             -> s1 on (W_E_G2);
-            -> violation on (W_D_G2=1) recover res2 := 2;
+            -> violation on (W_D_G2=1) recover W_D_G2 := 0;
            }
     }
 }
@@ -60,11 +58,11 @@ policy p3 of runtime_lifecycle_enforcer {
 		s0 {    
             -> s1 on (W_B_G1 and D_G2_p3=1): B_G1_p3 := 1;
             -> s0 on (W_D_G2): D_G2_p3 := 1;
-            -> violation on (W_B_G1 and (D_G2_p3=0)) recover res3 := 1;
+            -> violation on (W_B_G1 and (D_G2_p3=0)) recover W_B_G1 := 0;
            }
         s1 {    
             -> s1 on (W_B_G1);
-            -> violation on (W_D_G2=1) recover res3 := 2;
+            -> violation on (W_D_G2=1) recover W_D_G2 := 0;
            }
     }
 }
