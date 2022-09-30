@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnforcedFunction Name="runtime_lifecycle_enforcer">
+	<Interface>
+		<Input Name="W_A_G1" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="W_B_G1" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="W_C_G1" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="W_C_G2" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="W_D_G2" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="W_E_G2" Type="int16_t" Constant="false" Comment=""></Input>
+	</Interface>
+	<Policy Name="p1">
+		<InternalVars>
+			<VarDeclaration Name="A_G1_p1" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+			<VarDeclaration Name="B_G1_p1" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+			<VarDeclaration Name="C_G1_p1" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+		</InternalVars>
+		<Machine>
+			<PState>s0</PState>
+			<PState>s1</PState>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s1</Destination>
+				<Condition>( W_A_G1 and B_G1_p1 = 1 and C_G1_p1 = 1 )</Condition>
+				<Expressions>
+					<VarName>A_G1_p1</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s0</Destination>
+				<Condition>( W_B_G1 )</Condition>
+				<Expressions>
+					<VarName>B_G1_p1</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s0</Destination>
+				<Condition>( W_C_G1 )</Condition>
+				<Expressions>
+					<VarName>C_G1_p1</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>s1</Destination>
+				<Condition>( W_A_G1 )</Condition>
+			</PTransition>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>violation</Destination>
+				<Condition>( W_A_G1 and ( B_G1_p1 = 0 or C_G1_p1 = 0 ) )</Condition>
+				<Recover>
+					<VarName>W_A_G1</VarName>
+					<Value>0</Value>
+				</Recover>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>violation</Destination>
+				<Condition>( W_B_G1 or W_C_G1 )</Condition>
+				<Recover>
+					<VarName>W_B_G1</VarName>
+					<Value>0</Value>
+				</Recover>
+				<Recover>
+					<VarName>W_C_G1</VarName>
+					<Value>0</Value>
+				</Recover>
+			</PTransition>
+		</Machine>
+	</Policy>
+	<Policy Name="p2">
+		<InternalVars>
+			<VarDeclaration Name="E_G2_p2" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+			<VarDeclaration Name="D_G2_p2" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+		</InternalVars>
+		<Machine>
+			<PState>s0</PState>
+			<PState>s1</PState>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s1</Destination>
+				<Condition>( W_E_G2 and D_G2_p2 = 1 )</Condition>
+				<Expressions>
+					<VarName>E_G2_p2</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s0</Destination>
+				<Condition>( W_D_G2 )</Condition>
+				<Expressions>
+					<VarName>D_G2_p2</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>s1</Destination>
+				<Condition>( W_E_G2 )</Condition>
+			</PTransition>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>violation</Destination>
+				<Condition>( W_E_G2 and D_G2_p2 = 0 )</Condition>
+				<Recover>
+					<VarName>W_E_G2</VarName>
+					<Value>0</Value>
+				</Recover>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>violation</Destination>
+				<Condition>( W_D_G2 = 1 )</Condition>
+				<Recover>
+					<VarName>W_D_G2</VarName>
+					<Value>0</Value>
+				</Recover>
+			</PTransition>
+		</Machine>
+	</Policy>
+	<Policy Name="p3">
+		<InternalVars>
+			<VarDeclaration Name="B_G1_p3" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+			<VarDeclaration Name="D_G2_p3" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+		</InternalVars>
+		<Machine>
+			<PState>s0</PState>
+			<PState>s1</PState>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s1</Destination>
+				<Condition>( W_B_G1 and D_G2_p3 = 1 )</Condition>
+				<Expressions>
+					<VarName>B_G1_p3</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s0</Destination>
+				<Condition>( W_D_G2 )</Condition>
+				<Expressions>
+					<VarName>D_G2_p3</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>s1</Destination>
+				<Condition>( W_B_G1 )</Condition>
+			</PTransition>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>violation</Destination>
+				<Condition>( W_B_G1 and ( D_G2_p3 = 0 ) )</Condition>
+				<Recover>
+					<VarName>W_B_G1</VarName>
+					<Value>0</Value>
+				</Recover>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>violation</Destination>
+				<Condition>( W_D_G2 = 1 )</Condition>
+				<Recover>
+					<VarName>W_D_G2</VarName>
+					<Value>0</Value>
+				</Recover>
+			</PTransition>
+		</Machine>
+	</Policy>
+</EnforcedFunction>

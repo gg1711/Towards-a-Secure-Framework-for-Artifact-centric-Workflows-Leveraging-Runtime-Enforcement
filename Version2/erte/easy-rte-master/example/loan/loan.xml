@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnforcedFunction Name="loan">
+	<Interface>
+		<Input Name="A" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="B" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="C" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="D" Type="int16_t" Constant="false" Comment=""></Input>
+		<Input Name="E" Type="int16_t" Constant="false" Comment=""></Input>
+		<Output Name="P1" Type="int16_t" Constant="false" Comment=""></Output>
+		<Output Name="P2" Type="int16_t" Constant="false" Comment=""></Output>
+	</Interface>
+	<Policy Name="p1">
+		<InternalVars>
+			<VarDeclaration Name="b" Type="int16_t" Constant="false" InitialValue="0" Comment=""></VarDeclaration>
+		</InternalVars>
+		<Machine>
+			<PState>s0</PState>
+			<PState>s1</PState>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s1</Destination>
+				<Condition>B</Condition>
+				<Expressions>
+					<VarName>b</VarName>
+					<Value>1</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>s1</Destination>
+				<Condition>B</Condition>
+				<Expressions>
+					<VarName>b</VarName>
+					<Value>2</Value>
+				</Expressions>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>s1</Destination>
+				<Condition>( E and b = 2 )</Condition>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>violation</Destination>
+				<Condition>( E and b &lt; 2 )</Condition>
+				<Recover>
+					<VarName>P1</VarName>
+					<Value>1</Value>
+				</Recover>
+			</PTransition>
+		</Machine>
+	</Policy>
+	<Policy Name="p2">
+		<InternalVars></InternalVars>
+		<Machine>
+			<PState>s0</PState>
+			<PState>s1</PState>
+			<PTransition>
+				<Source>s0</Source>
+				<Destination>s1</Destination>
+				<Condition>A</Condition>
+			</PTransition>
+			<PTransition>
+				<Source>s1</Source>
+				<Destination>violation</Destination>
+				<Condition>A</Condition>
+				<Recover>
+					<VarName>P2</VarName>
+					<Value>1</Value>
+				</Recover>
+			</PTransition>
+		</Machine>
+	</Policy>
+</EnforcedFunction>

@@ -1,0 +1,85 @@
+function loan;
+interface of loan {
+	in int16_t A, B, C, D, E;  //in here means peers
+	out int16_t P1,P2;	//in here means which policy got violated
+}
+
+
+// E can only write after B, B have written 
+policy p1 of loan {
+    internals{
+        int16_t b := 0 ;
+    }
+	states {
+
+	s0 {    
+            -> s1 on B: b := 1;
+           }
+        s1 {    
+            -> s1 on B: b := 2;
+            -> s1 on (E and b=2);
+            -> violation on (E and b<2 ) recover P1:=1;
+          }          
+    }
+}
+
+
+
+
+
+/*policy p1 of loan {
+    internals{
+        int16_t b := 0 ;
+        int16_t d := 0 ;
+    }
+	states {
+
+	s0 {    
+            -> s1 on B: b := 1;
+           }
+        s1 {    
+            -> s2 on D: d := 1;
+          }
+        s2 {    
+            -> s3 on B: b := 2;
+           }
+        s3 {    
+            -> s3 on (E and b=2 and d=1);
+            -> violation on (E and (b<>2 or d<>1)) recover P1:=1;
+           }
+    }
+}
+*/
+
+
+
+
+
+// A can write maximum 1 time
+policy p2 of loan {
+    states {
+        s0 {
+            -> s1 on A;   
+           }
+        s1 {
+            -> violation on A recover P2:=1; 
+           }
+        }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
